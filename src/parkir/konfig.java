@@ -4,48 +4,29 @@
  * and open the template in the editor.
  */
 package parkir;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.*;
 /**
  *
- * @author zurin
+ * @author Firdaus Fieri Andrian Al - Irsyad
  */
 public class konfig {
-    public Connection conn;
-    public Statement st;
-    public ResultSet rs;
     
-    public void koneksi()
-    {   
-        konek("localhost","parkir","root","");
+    private static Connection konek;
+    public static Connection configDB()throws SQLException{
+        try{
+            String url="jdbc:mysql://localhost:3306/parkir";
+            String user="root";
+            String pass="";
+            
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            konek = DriverManager.getConnection(url, user, pass);
+        }catch(SQLException e){
+            System.out.println("Koneksi ke Database Gagal" + e.getMessage());
+        }
+        return konek;
     }
-    
-    public void konek(String server, String db, String user,String passwd){
-        System.out.println("Keterangan");
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Driver JDBC tidak barhasil Load");
-            e.printStackTrace();
-            return;
-        }
-        System.out.println("Driver berhasil di Load");
-        conn = null;
-        try {
-            conn = DriverManager.getConnection(
-            "jdbc:mysql://"+server+":3306/"+db,user,passwd);
-        } catch (SQLException e) {
-            System.out.println("Tidak bisa koneksi ke database");
-            e.printStackTrace();
-            return;
-        }
-        if (conn != null)
-            System.out.println("Berhasil Koneksi!");
-        else
-            System.out.println("Koneksi Gagal........ !");
-        
-        }
-    }
+}
 
